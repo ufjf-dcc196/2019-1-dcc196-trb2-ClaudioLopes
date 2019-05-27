@@ -1,5 +1,4 @@
-# 2019-1-dcc196-trb2-ClaudioLopes
-2019-1-dcc196-trb2-ClaudioLopes created by GitHub Classroom
+# Trabalho 2 da disciplina de Laboratório de Programação para Dispositivos Móveis 2019-1
 
 Nome: Cláudio Nazareth Lopes
 
