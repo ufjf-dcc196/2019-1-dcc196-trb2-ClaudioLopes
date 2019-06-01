@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">TRB2</string>
+    <string-array name="planets_array">
+        <item>A fazer</item>
+        <item>Em execução</item>
+        <item>Bloqueada</item>
+        <item>Concluída</item>
+    </string-array>
+
 </resources>
