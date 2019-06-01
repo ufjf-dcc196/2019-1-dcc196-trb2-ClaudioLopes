@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 public final class TarefaTags {
     public static final String Int_Type = " INTEGER";
     public static final String Sep = ",";
-    public static final String SQL_CREATE_TAREFA_TAGS = "CREATE TABLE" + tarefaTeags.TABLE_NAME + " (" +
+    public static final String SQL_CREATE_TAREFA_TAGS = "CREATE TABLE " + tarefaTeags.TABLE_NAME + " (" +
             tarefaTeags._ID + Int_Type + " PRIMARY KEY AUTOINCREMENT" + Sep +
             tarefaTeags.COLUMN_NAME_TAREFA + Int_Type + Sep +
             tarefaTeags.COLUMN_NAME_TAG + Int_Type + Sep +
