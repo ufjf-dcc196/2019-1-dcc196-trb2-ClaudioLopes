@@ -24,6 +24,7 @@ import Persistence.TarefaTags;
 public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_MAIN = 1;
+    public static final int REQUEST_DET = 3;
     public Cursor c;
 
     @Override
@@ -73,6 +74,31 @@ public class MainActivity extends AppCompatActivity {
         TarefaAdapter tarefaAdapter = new TarefaAdapter(c, this);
         recyclerView.setAdapter(tarefaAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        tarefaAdapter.setOnTarefaAdapterClickListener(new TarefaAdapter.OnTarefaAdapterClickListener() {
+            @Override
+            public void onTarefaAdapterClick(View v, int possition) {
+                c.moveToPosition(possition);
+                int idxid = c.getColumnIndexOrThrow(Tarefa.tarefa._ID);
+                int idxTitulo = c.getColumnIndexOrThrow(Tarefa.tarefa.COLUMN_NAME_TITULO);
+                int idxDescricao = c.getColumnIndexOrThrow(Tarefa.tarefa.COLUMN_NAME_DESCRICAO);
+                int idxLimite = c.getColumnIndexOrThrow(Tarefa.tarefa.COLUMN_NAME_LIMITE);
+                int idxUsado = c.getColumnIndexOrThrow(Tarefa.tarefa.COLUMN_NAME_USADO);
+                int idxGrauDificuldade = c.getColumnIndexOrThrow(Tarefa.tarefa.COLUMN_NAME_GRAU_DIFICULDADE);
+                int idxEstado = c.getColumnIndexOrThrow(Tarefa.tarefa.COLUMN_NAME_ESTADO);
+
+
+                Intent intent = new Intent(MainActivity.this, EditarTarefa.class);
+                intent.putExtra("id", c.getInt(idxid));
+                intent.putExtra("titulo", c.getString(idxTitulo));
+                intent.putExtra("descricao", c.getString(idxDescricao));
+                intent.putExtra("limite", c.getString(idxLimite));
+                intent.putExtra("usado", c.getString(idxUsado));
+                intent.putExtra("dificuldade", c.getInt(idxGrauDificuldade));
+                intent.putExtra("estado", c.getString(idxEstado));
+                intent.putExtra("posicao", possition);
+                startActivityForResult(intent, MainActivity.REQUEST_DET);
+            }
+        });
 
     }
 
@@ -88,13 +114,31 @@ public class MainActivity extends AppCompatActivity {
                 values.put(Tarefa.tarefa.COLUMN_NAME_LIMITE, bundle.get("limite").toString());
                 values.put(Tarefa.tarefa.COLUMN_NAME_USADO, bundle.get("usado").toString());
                 values.put(Tarefa.tarefa.COLUMN_NAME_GRAU_DIFICULDADE, Integer.parseInt(bundle.get("dificuldade").toString()));
+                values.put(Tarefa.tarefa.COLUMN_NAME_ESTADO, bundle.get("estado").toString());
                 long id = db.insert(Tarefa.tarefa.TABLE_NAME, null, values);
             }
-
-            RecyclerView recyclerView = findViewById(R.id.rvTarefa);
-            TarefaAdapter tarefaAdapter = new TarefaAdapter(c, this);
-            recyclerView.setAdapter(tarefaAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
+        if (requestCode == MainActivity.REQUEST_DET) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                BibliotecaDbHelper bibliotecaHelper = new BibliotecaDbHelper(this);
+                SQLiteDatabase db = bibliotecaHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(Tarefa.tarefa.COLUMN_NAME_TITULO, bundle.get("titulo").toString());
+                values.put(Tarefa.tarefa.COLUMN_NAME_DESCRICAO, bundle.get("descricao").toString());
+                values.put(Tarefa.tarefa.COLUMN_NAME_LIMITE, bundle.get("limite").toString());
+                values.put(Tarefa.tarefa.COLUMN_NAME_USADO, bundle.get("usado").toString());
+                values.put(Tarefa.tarefa.COLUMN_NAME_GRAU_DIFICULDADE, Integer.parseInt(bundle.get("dificuldade").toString()));
+                values.put(Tarefa.tarefa.COLUMN_NAME_ESTADO, bundle.get("estado").toString());
+                String select = Tarefa.tarefa._ID + " = ?";
+                String[] selectArgs = {bundle.get("id").toString()};
+                db.update(Tarefa.tarefa.TABLE_NAME, values, select, selectArgs);
+            }
+        }
+
+        RecyclerView recyclerView = findViewById(R.id.rvTarefa);
+        TarefaAdapter tarefaAdapter = new TarefaAdapter(c, this);
+        recyclerView.setAdapter(tarefaAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
