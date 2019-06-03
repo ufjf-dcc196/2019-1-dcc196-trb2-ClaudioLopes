@@ -24,7 +24,7 @@ import Persistence.TarefaTags;
 public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_MAIN = 1;
-    public static final int REQUEST_DET = 3;
+    public static final int REQUEST_EDT = 2;
     public Cursor c;
 
     @Override
@@ -69,7 +69,57 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        recycleView();
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        if (requestCode == MainActivity.REQUEST_MAIN) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                BibliotecaDbHelper bibliotecaHelper = new BibliotecaDbHelper(this);
+                SQLiteDatabase db = bibliotecaHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(Tarefa.tarefa.COLUMN_NAME_TITULO, bundle.get("titulo").toString());
+                values.put(Tarefa.tarefa.COLUMN_NAME_DESCRICAO, bundle.get("descricao").toString());
+                values.put(Tarefa.tarefa.COLUMN_NAME_LIMITE, bundle.get("limite").toString());
+                values.put(Tarefa.tarefa.COLUMN_NAME_USADO, bundle.get("usado").toString());
+                values.put(Tarefa.tarefa.COLUMN_NAME_GRAU_DIFICULDADE, Integer.parseInt(bundle.get("dificuldade").toString()));
+                values.put(Tarefa.tarefa.COLUMN_NAME_ESTADO, bundle.get("estado").toString());
+                long id = db.insert(Tarefa.tarefa.TABLE_NAME, null, values);
+            }
+        }
+        if (requestCode == MainActivity.REQUEST_EDT) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                Bundle bundle = data.getExtras();
+                BibliotecaDbHelper bibliotecaHelper = new BibliotecaDbHelper(this);
+
+                ContentValues values = new ContentValues();
+                try {
+                    SQLiteDatabase db = bibliotecaHelper.getWritableDatabase();
+                    values.put(Tarefa.tarefa.COLUMN_NAME_TITULO, bundle.get("titulo").toString());
+                    values.put(Tarefa.tarefa.COLUMN_NAME_DESCRICAO, bundle.get("descricao").toString());
+                    values.put(Tarefa.tarefa.COLUMN_NAME_LIMITE, bundle.get("limite").toString());
+                    values.put(Tarefa.tarefa.COLUMN_NAME_USADO, bundle.get("usado").toString());
+                    values.put(Tarefa.tarefa.COLUMN_NAME_GRAU_DIFICULDADE, Integer.parseInt(bundle.get("dificuldade").toString()));
+                    values.put(Tarefa.tarefa.COLUMN_NAME_ESTADO, bundle.get("estado").toString());
+                    String select = Tarefa.tarefa._ID + " = ?";
+                    String[] selectArgs = {bundle.get("id").toString()};
+                    db.update(Tarefa.tarefa.TABLE_NAME, values, select, selectArgs);
+                }catch (NullPointerException ex){
+                    SQLiteDatabase db = bibliotecaHelper.getWritableDatabase();
+                    String select = Tarefa.tarefa._ID + " = ?";
+                    String[] selectArgs = {bundle.get("id").toString()};
+                    db.delete(Tarefa.tarefa.TABLE_NAME, select, selectArgs);
+                }
+            }
+        }
+
+        recycleView();
+    }
+
+    private void recycleView(){
         RecyclerView recyclerView = findViewById(R.id.rvTarefa);
         TarefaAdapter tarefaAdapter = new TarefaAdapter(c, this);
         recyclerView.setAdapter(tarefaAdapter);
@@ -96,49 +146,8 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("dificuldade", c.getInt(idxGrauDificuldade));
                 intent.putExtra("estado", c.getString(idxEstado));
                 intent.putExtra("posicao", possition);
-                startActivityForResult(intent, MainActivity.REQUEST_DET);
+                startActivityForResult(intent, MainActivity.REQUEST_EDT);
             }
         });
-
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        if (requestCode == MainActivity.REQUEST_MAIN) {
-            if (resultCode == Activity.RESULT_OK) {
-                Bundle bundle = data.getExtras();
-                BibliotecaDbHelper bibliotecaHelper = new BibliotecaDbHelper(this);
-                SQLiteDatabase db = bibliotecaHelper.getWritableDatabase();
-                ContentValues values = new ContentValues();
-                values.put(Tarefa.tarefa.COLUMN_NAME_TITULO, bundle.get("titulo").toString());
-                values.put(Tarefa.tarefa.COLUMN_NAME_DESCRICAO, bundle.get("descricao").toString());
-                values.put(Tarefa.tarefa.COLUMN_NAME_LIMITE, bundle.get("limite").toString());
-                values.put(Tarefa.tarefa.COLUMN_NAME_USADO, bundle.get("usado").toString());
-                values.put(Tarefa.tarefa.COLUMN_NAME_GRAU_DIFICULDADE, Integer.parseInt(bundle.get("dificuldade").toString()));
-                values.put(Tarefa.tarefa.COLUMN_NAME_ESTADO, bundle.get("estado").toString());
-                long id = db.insert(Tarefa.tarefa.TABLE_NAME, null, values);
-            }
-        }
-        if (requestCode == MainActivity.REQUEST_DET) {
-            if (resultCode == Activity.RESULT_OK) {
-                Bundle bundle = data.getExtras();
-                BibliotecaDbHelper bibliotecaHelper = new BibliotecaDbHelper(this);
-                SQLiteDatabase db = bibliotecaHelper.getWritableDatabase();
-                ContentValues values = new ContentValues();
-                values.put(Tarefa.tarefa.COLUMN_NAME_TITULO, bundle.get("titulo").toString());
-                values.put(Tarefa.tarefa.COLUMN_NAME_DESCRICAO, bundle.get("descricao").toString());
-                values.put(Tarefa.tarefa.COLUMN_NAME_LIMITE, bundle.get("limite").toString());
-                values.put(Tarefa.tarefa.COLUMN_NAME_USADO, bundle.get("usado").toString());
-                values.put(Tarefa.tarefa.COLUMN_NAME_GRAU_DIFICULDADE, Integer.parseInt(bundle.get("dificuldade").toString()));
-                values.put(Tarefa.tarefa.COLUMN_NAME_ESTADO, bundle.get("estado").toString());
-                String select = Tarefa.tarefa._ID + " = ?";
-                String[] selectArgs = {bundle.get("id").toString()};
-                db.update(Tarefa.tarefa.TABLE_NAME, values, select, selectArgs);
-            }
-        }
-
-        RecyclerView recyclerView = findViewById(R.id.rvTarefa);
-        TarefaAdapter tarefaAdapter = new TarefaAdapter(c, this);
-        recyclerView.setAdapter(tarefaAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }

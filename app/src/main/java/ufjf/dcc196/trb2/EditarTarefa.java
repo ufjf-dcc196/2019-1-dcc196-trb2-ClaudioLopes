@@ -54,6 +54,18 @@ public class EditarTarefa extends AppCompatActivity {
                 finish();
             }
         });
+
+        Button btnExcluir = findViewById(R.id.btnExcluir);
+
+        btnExcluir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent();
+                intent1.putExtra("id", bundle.get("id").toString());
+                setResult(Activity.RESULT_OK, intent1);
+                finish();
+            }
+        });
     }
 
 
