@@ -2,11 +2,14 @@ package ufjf.dcc196.trb2;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 public class EditarTarefa extends AppCompatActivity {
 
@@ -20,7 +23,12 @@ public class EditarTarefa extends AppCompatActivity {
         final EditText etGrauDificuldade = findViewById(R.id.editTextDificuldade);
         final EditText etDataLimite = findViewById(R.id.editTextDataLimite);
         final EditText etDataAtualizacao = findViewById(R.id.editTextDataAtualizacao);
-        final EditText etEstado = findViewById(R.id.editTextEstado);
+        final Spinner etEstado = findViewById(R.id.plEstado);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.planets_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        etEstado.setAdapter(adapter);
 
         final Intent intent = getIntent();
         final Bundle bundle = intent.getExtras();
@@ -31,7 +39,7 @@ public class EditarTarefa extends AppCompatActivity {
             etGrauDificuldade.setText(bundle.get("dificuldade").toString());
             etDataLimite.setText(bundle.get("limite").toString());
             etDataAtualizacao.setText(bundle.get("usado").toString());
-            etEstado.setText(bundle.get("estado").toString());
+            etEstado.setSelection(Integer.parseInt(bundle.get("estado").toString()));
         }catch (NullPointerException e){
 
         }
@@ -48,7 +56,7 @@ public class EditarTarefa extends AppCompatActivity {
                 intent1.putExtra("limite", etDataLimite.getText());
                 intent1.putExtra("usado", etDataAtualizacao.getText());
                 intent1.putExtra("dificuldade", etGrauDificuldade.getText());
-                intent1.putExtra("estado", etEstado.getText());
+                intent1.putExtra("estado", etEstado.getSelectedItemPosition());
                 intent1.putExtra("posicao", bundle.get("posicao").toString());
                 setResult(Activity.RESULT_OK, intent1);
                 finish();

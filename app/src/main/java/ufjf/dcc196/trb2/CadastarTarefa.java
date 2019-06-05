@@ -17,7 +17,7 @@ public class CadastarTarefa extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastar_tarefa);
 
-        final Spinner etEstado = findViewById(R.id.planets_spinner);
+        final Spinner etEstado = findViewById(R.id.plEstado);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.planets_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -40,7 +40,7 @@ public class CadastarTarefa extends AppCompatActivity {
                 intent.putExtra("dificuldade", etGrauDificuldade.getText());
                 intent.putExtra("limite", etDataLimite.getText());
                 intent.putExtra("usado", etDataAtualizacao.getText());
-                intent.putExtra("estado", etEstado.getSelectedItem().toString());
+                intent.putExtra("estado", etEstado.getSelectedItemPosition());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }

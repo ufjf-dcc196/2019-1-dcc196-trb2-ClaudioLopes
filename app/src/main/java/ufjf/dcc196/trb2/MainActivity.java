@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
                 Tarefa.tarefa.COLUMN_NAME_ESTADO,
                 //TarefaTags.tarefaTeags.COLUMN_NAME_TAG,
         };
-        String selecao = Tarefa.tarefa._ID + " >= ?";
+        String selecao = Tarefa.tarefa.COLUMN_NAME_ESTADO + " >= ?";
         String[] args = {"0"};
-        String sort = Tarefa.tarefa._ID + " DESC";
+        String sort = Tarefa.tarefa.COLUMN_NAME_ESTADO + " DESC";
         c = dbR.query(Tarefa.tarefa.TABLE_NAME, visao, selecao, args, null, null  , sort);
         c.moveToFirst();
 
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 values.put(Tarefa.tarefa.COLUMN_NAME_LIMITE, bundle.get("limite").toString());
                 values.put(Tarefa.tarefa.COLUMN_NAME_USADO, bundle.get("usado").toString());
                 values.put(Tarefa.tarefa.COLUMN_NAME_GRAU_DIFICULDADE, Integer.parseInt(bundle.get("dificuldade").toString()));
-                values.put(Tarefa.tarefa.COLUMN_NAME_ESTADO, bundle.get("estado").toString());
+                values.put(Tarefa.tarefa.COLUMN_NAME_ESTADO, Integer.parseInt(bundle.get("estado").toString()));
                 long id = db.insert(Tarefa.tarefa.TABLE_NAME, null, values);
             }
         }
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     values.put(Tarefa.tarefa.COLUMN_NAME_LIMITE, bundle.get("limite").toString());
                     values.put(Tarefa.tarefa.COLUMN_NAME_USADO, bundle.get("usado").toString());
                     values.put(Tarefa.tarefa.COLUMN_NAME_GRAU_DIFICULDADE, Integer.parseInt(bundle.get("dificuldade").toString()));
-                    values.put(Tarefa.tarefa.COLUMN_NAME_ESTADO, bundle.get("estado").toString());
+                    values.put(Tarefa.tarefa.COLUMN_NAME_ESTADO, Integer.parseInt(bundle.get("estado").toString()));
                     String select = Tarefa.tarefa._ID + " = ?";
                     String[] selectArgs = {bundle.get("id").toString()};
                     db.update(Tarefa.tarefa.TABLE_NAME, values, select, selectArgs);
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("limite", c.getString(idxLimite));
                 intent.putExtra("usado", c.getString(idxUsado));
                 intent.putExtra("dificuldade", c.getInt(idxGrauDificuldade));
-                intent.putExtra("estado", c.getString(idxEstado));
+                intent.putExtra("estado", c.getInt(idxEstado));
                 intent.putExtra("posicao", possition);
                 startActivityForResult(intent, MainActivity.REQUEST_EDT);
             }

@@ -215,7 +215,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
-        android:id="@+id/planets_spinner"
+        android:id="@+id/plEstado"
         android:layout_width="209dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -243,7 +243,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/planets_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/plEstado" />
 
 
 </android.support.constraint.ConstraintLayout>

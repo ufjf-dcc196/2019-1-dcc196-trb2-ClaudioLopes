@@ -7,7 +7,7 @@ public class TarefaClass {
     private int grauDificuldade;
     private String dataLimite;
     private String dataUpDate;
-    private String estados;
+    private int estados;
     private String tag;
 
     public TarefaClass() {
@@ -53,11 +53,11 @@ public class TarefaClass {
         this.dataUpDate = dataUpDate;
     }
 
-    public String getEstados() {
+    public int getEstados() {
         return estados;
     }
 
-    public void setEstados(String estados) {
+    public void setEstados(int estados) {
         this.estados = estados;
     }
 

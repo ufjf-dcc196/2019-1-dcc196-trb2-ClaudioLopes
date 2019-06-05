@@ -71,8 +71,22 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.ViewHolder
         viewHolder.textDescricao.setText(items.getString(idxDescricao));
         viewHolder.textLimite.setText(items.getString(idxLimite));
         viewHolder.textEstado.setText(items.getString(idxUsado));
+        if(items.getInt(idxGrauDificuldade) > 5){
+            viewHolder.textGrauDificuldade.setText("5");
+        }
         viewHolder.textGrauDificuldade.setText(String.valueOf(items.getInt(idxGrauDificuldade)));
-        viewHolder.textEstado.setText(items.getString(idxEstado));
+        if(items.getInt(idxEstado) == 0){
+            viewHolder.textEstado.setText("A fazer");
+        }
+        if(items.getInt(idxEstado) == 1){
+            viewHolder.textEstado.setText("Em execução");
+        }
+        if(items.getInt(idxEstado) == 0){
+            viewHolder.textEstado.setText("Bloqueada");
+        }
+        if(items.getInt(idxEstado) == 0){
+            viewHolder.textEstado.setText("Concluida");
+        }
         //viewHolder.textTags.setText(items.getString(idxTag));
     }
 
