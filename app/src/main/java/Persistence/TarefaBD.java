@@ -2,7 +2,7 @@ package Persistence;
 
 import android.provider.BaseColumns;
 
-public final class Tarefa {
+public final class TarefaBD {
     public static final String Text_Type = " TEXT";
     public static final String Int_Type = " INTEGER";
     public static final String Data_Type = " DATE";
@@ -17,7 +17,7 @@ public final class Tarefa {
             tarefa.COLUMN_NAME_ESTADO + Int_Type + ")";
     public static final String SQL_DROP_TAREFA = "DROP TABLE IF EXISTIS " + tarefa.TABLE_NAME;
 
-    public Tarefa(){
+    public TarefaBD(){
 
     }
 

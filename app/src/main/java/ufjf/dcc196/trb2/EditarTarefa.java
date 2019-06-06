@@ -22,7 +22,6 @@ public class EditarTarefa extends AppCompatActivity {
         final EditText etDescricao = findViewById(R.id.editTextDescricao);
         final EditText etGrauDificuldade = findViewById(R.id.editTextDificuldade);
         final EditText etDataLimite = findViewById(R.id.editTextDataLimite);
-        final EditText etDataAtualizacao = findViewById(R.id.editTextDataAtualizacao);
         final Spinner etEstado = findViewById(R.id.plEstado);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -38,7 +37,6 @@ public class EditarTarefa extends AppCompatActivity {
             etDescricao.setText(bundle.get("descricao").toString());
             etGrauDificuldade.setText(bundle.get("dificuldade").toString());
             etDataLimite.setText(bundle.get("limite").toString());
-            etDataAtualizacao.setText(bundle.get("usado").toString());
             etEstado.setSelection(Integer.parseInt(bundle.get("estado").toString()));
         }catch (NullPointerException e){
 
@@ -54,7 +52,6 @@ public class EditarTarefa extends AppCompatActivity {
                 intent1.putExtra("titulo", etTitulo.getText());
                 intent1.putExtra("descricao", etDescricao.getText());
                 intent1.putExtra("limite", etDataLimite.getText());
-                intent1.putExtra("usado", etDataAtualizacao.getText());
                 intent1.putExtra("dificuldade", etGrauDificuldade.getText());
                 intent1.putExtra("estado", etEstado.getSelectedItemPosition());
                 intent1.putExtra("posicao", bundle.get("posicao").toString());

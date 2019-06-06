@@ -4,19 +4,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
 import Persistence.BibliotecaDbHelper;
-import Persistence.Tarefa;
-import Persistence.TarefaTags;
+import Persistence.TarefaBD;
 
 public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.ViewHolder> {
 
@@ -44,47 +39,49 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.ViewHolder
         BibliotecaDbHelper bibliotecaHelper = new BibliotecaDbHelper(contexto);
         SQLiteDatabase dbR = bibliotecaHelper.getReadableDatabase();
         String[] visao = {
-                Tarefa.tarefa._ID,
-                Tarefa.tarefa.COLUMN_NAME_TITULO,
-                Tarefa.tarefa.COLUMN_NAME_DESCRICAO,
-                Tarefa.tarefa.COLUMN_NAME_LIMITE,
-                Tarefa.tarefa.COLUMN_NAME_USADO,
-                Tarefa.tarefa.COLUMN_NAME_GRAU_DIFICULDADE,
-                Tarefa.tarefa.COLUMN_NAME_ESTADO,
+                TarefaBD.tarefa._ID,
+                TarefaBD.tarefa.COLUMN_NAME_TITULO,
+                TarefaBD.tarefa.COLUMN_NAME_DESCRICAO,
+                TarefaBD.tarefa.COLUMN_NAME_LIMITE,
+                TarefaBD.tarefa.COLUMN_NAME_USADO,
+                TarefaBD.tarefa.COLUMN_NAME_GRAU_DIFICULDADE,
+                TarefaBD.tarefa.COLUMN_NAME_ESTADO,
                 //TarefaTags.tarefaTeags.COLUMN_NAME_TAG,
         };
-        String selecao = Tarefa.tarefa._ID + " >= ?";
+        String selecao = TarefaBD.tarefa._ID + " >= ?";
         String[] args = {"0"};
-        String sort = Tarefa.tarefa._ID + " DESC";
-        items = dbR.query(Tarefa.tarefa.TABLE_NAME, visao, selecao, args, null, null  , sort);
+        String sort = TarefaBD.tarefa._ID + " DESC";
+        items = dbR.query(TarefaBD.tarefa.TABLE_NAME, visao, selecao, args, null, null  , sort);
 
-        int idxTitulo = items.getColumnIndexOrThrow(Tarefa.tarefa.COLUMN_NAME_TITULO);
-        int idxDescricao = items.getColumnIndexOrThrow(Tarefa.tarefa.COLUMN_NAME_DESCRICAO);
-        int idxLimite = items.getColumnIndexOrThrow(Tarefa.tarefa.COLUMN_NAME_LIMITE);
-        int idxUsado = items.getColumnIndexOrThrow(Tarefa.tarefa.COLUMN_NAME_USADO);
-        int idxGrauDificuldade = items.getColumnIndexOrThrow(Tarefa.tarefa.COLUMN_NAME_GRAU_DIFICULDADE);
-        int idxEstado = items.getColumnIndexOrThrow(Tarefa.tarefa.COLUMN_NAME_ESTADO);
+        int idxTitulo = items.getColumnIndexOrThrow(TarefaBD.tarefa.COLUMN_NAME_TITULO);
+        int idxDescricao = items.getColumnIndexOrThrow(TarefaBD.tarefa.COLUMN_NAME_DESCRICAO);
+        int idxLimite = items.getColumnIndexOrThrow(TarefaBD.tarefa.COLUMN_NAME_LIMITE);
+        int idxUsado = items.getColumnIndexOrThrow(TarefaBD.tarefa.COLUMN_NAME_USADO);
+        int idxGrauDificuldade = items.getColumnIndexOrThrow(TarefaBD.tarefa.COLUMN_NAME_GRAU_DIFICULDADE);
+        int idxEstado = items.getColumnIndexOrThrow(TarefaBD.tarefa.COLUMN_NAME_ESTADO);
         //int idxTag = items.getColumnIndexOrThrow(TarefaTags.tarefaTeags.COLUMN_NAME_TAG);
 
         items.moveToPosition(i);
         viewHolder.textTitulo.setText(items.getString(idxTitulo));
         viewHolder.textDescricao.setText(items.getString(idxDescricao));
         viewHolder.textLimite.setText(items.getString(idxLimite));
+        viewHolder.textUltimaAtualizacao.setText(items.getString(idxUsado));
         viewHolder.textEstado.setText(items.getString(idxUsado));
         if(items.getInt(idxGrauDificuldade) > 5){
             viewHolder.textGrauDificuldade.setText("5");
+        }else{
+            viewHolder.textGrauDificuldade.setText(String.valueOf(items.getInt(idxGrauDificuldade)));
         }
-        viewHolder.textGrauDificuldade.setText(String.valueOf(items.getInt(idxGrauDificuldade)));
         if(items.getInt(idxEstado) == 0){
             viewHolder.textEstado.setText("A fazer");
         }
         if(items.getInt(idxEstado) == 1){
             viewHolder.textEstado.setText("Em execução");
         }
-        if(items.getInt(idxEstado) == 0){
+        if(items.getInt(idxEstado) == 2){
             viewHolder.textEstado.setText("Bloqueada");
         }
-        if(items.getInt(idxEstado) == 0){
+        if(items.getInt(idxEstado) == 3){
             viewHolder.textEstado.setText("Concluida");
         }
         //viewHolder.textTags.setText(items.getString(idxTag));

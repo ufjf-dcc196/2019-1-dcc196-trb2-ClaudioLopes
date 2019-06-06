@@ -27,7 +27,6 @@ public class CadastarTarefa extends AppCompatActivity {
         final EditText etDescricao = findViewById(R.id.editTextDescricao);
         final EditText etGrauDificuldade = findViewById(R.id.editTextDificuldade);
         final EditText etDataLimite = findViewById(R.id.editTextDataLimite);
-        final EditText etDataAtualizacao = findViewById(R.id.editTextDataAtualizacao);
 
         Button btnConfirmar = findViewById(R.id.btnConfirmar);
 
@@ -39,12 +38,12 @@ public class CadastarTarefa extends AppCompatActivity {
                 intent.putExtra("descricao", etDescricao.getText());
                 intent.putExtra("dificuldade", etGrauDificuldade.getText());
                 intent.putExtra("limite", etDataLimite.getText());
-                intent.putExtra("usado", etDataAtualizacao.getText());
                 intent.putExtra("estado", etEstado.getSelectedItemPosition());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }
         });
+
 
     }
 }

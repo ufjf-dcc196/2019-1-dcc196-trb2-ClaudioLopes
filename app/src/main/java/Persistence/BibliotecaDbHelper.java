@@ -13,14 +13,14 @@ public class BibliotecaDbHelper extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase sqLiteDatabase){
-        sqLiteDatabase.execSQL(Tarefa.SQL_CREATE_TAREFA);
-        sqLiteDatabase.execSQL(Tags.SQL_CREATE_TAGS);
+        sqLiteDatabase.execSQL(TarefaBD.SQL_CREATE_TAREFA);
+        sqLiteDatabase.execSQL(TagsBD.SQL_CREATE_TAGS);
         sqLiteDatabase.execSQL(TarefaTags.SQL_CREATE_TAREFA_TAGS);
     }
 
     public void onUpgrade (SQLiteDatabase sqLiteDatabase, int i, int i1){
-        sqLiteDatabase.execSQL(Tarefa.SQL_DROP_TAREFA);
-        sqLiteDatabase.execSQL(Tags.SQL_DROP_TAGS);
+        sqLiteDatabase.execSQL(TarefaBD.SQL_DROP_TAREFA);
+        sqLiteDatabase.execSQL(TagsBD.SQL_DROP_TAGS);
         sqLiteDatabase.execSQL(TarefaTags.SQL_DROP_TAREFA_TAGS);
         onCreate(sqLiteDatabase);
     }
