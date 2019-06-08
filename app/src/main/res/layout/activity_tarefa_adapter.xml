@@ -39,13 +39,6 @@
             android:layout_weight="1"
             android:text="Limite" />
 
-        <TextView
-            android:id="@+id/textViewDataUpdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Ultima atualização" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -56,6 +49,13 @@
         android:paddingTop="20dp"
         android:paddingRight="10dp"
         android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/textViewDataUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ultima atualização" />
 
         <TextView
             android:id="@+id/textViewGrauDificuldade"
@@ -71,11 +71,23 @@
             android:layout_weight="1"
             android:text="Estado" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingTop="20dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="20dp">
+
         <TextView
             android:id="@+id/textViewTags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Tags" />
+            android:text="Etiquetas" />
+
     </LinearLayout>
 </LinearLayout>

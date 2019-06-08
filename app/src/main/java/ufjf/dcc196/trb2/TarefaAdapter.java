@@ -3,6 +3,7 @@ package ufjf.dcc196.trb2;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import Persistence.BibliotecaDbHelper;
 import Persistence.TarefaBD;
+import Persistence.TarefaTags;
 
 public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.ViewHolder> {
 
@@ -46,11 +48,10 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.ViewHolder
                 TarefaBD.tarefa.COLUMN_NAME_USADO,
                 TarefaBD.tarefa.COLUMN_NAME_GRAU_DIFICULDADE,
                 TarefaBD.tarefa.COLUMN_NAME_ESTADO,
-                //TarefaTags.tarefaTeags.COLUMN_NAME_TAG,
         };
-        String selecao = TarefaBD.tarefa._ID + " >= ?";
+        String selecao = TarefaBD.tarefa.COLUMN_NAME_ESTADO + " >= ?";
         String[] args = {"0"};
-        String sort = TarefaBD.tarefa._ID + " DESC";
+        String sort = TarefaBD.tarefa.COLUMN_NAME_ESTADO + " ASC";
         items = dbR.query(TarefaBD.tarefa.TABLE_NAME, visao, selecao, args, null, null  , sort);
 
         int idxTitulo = items.getColumnIndexOrThrow(TarefaBD.tarefa.COLUMN_NAME_TITULO);
@@ -59,7 +60,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.ViewHolder
         int idxUsado = items.getColumnIndexOrThrow(TarefaBD.tarefa.COLUMN_NAME_USADO);
         int idxGrauDificuldade = items.getColumnIndexOrThrow(TarefaBD.tarefa.COLUMN_NAME_GRAU_DIFICULDADE);
         int idxEstado = items.getColumnIndexOrThrow(TarefaBD.tarefa.COLUMN_NAME_ESTADO);
-        //int idxTag = items.getColumnIndexOrThrow(TarefaTags.tarefaTeags.COLUMN_NAME_TAG);
+        int idxId = items.getColumnIndexOrThrow(TarefaBD.tarefa._ID);
 
         items.moveToPosition(i);
         viewHolder.textTitulo.setText(items.getString(idxTitulo));
@@ -84,7 +85,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.ViewHolder
         if(items.getInt(idxEstado) == 3){
             viewHolder.textEstado.setText("Concluida");
         }
-        //viewHolder.textTags.setText(items.getString(idxTag));
+        viewHolder.textTags.setText(getTags(items.getString(idxId)));
     }
 
     public int getItemCount(){
@@ -130,6 +131,30 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.ViewHolder
 
     public interface OnTarefaAdapterClickListener{
         public void onTarefaAdapterClick(View v, int possition);
+    }
+
+    private String getTags(String tarefa){
+            String tags = "";
+            BibliotecaDbHelper bibliotecaHelper = new BibliotecaDbHelper(contexto);
+            SQLiteDatabase db = bibliotecaHelper.getWritableDatabase();
+            String[] projection = {
+                    TarefaTags.tarefaTeags._ID,
+                    TarefaTags.tarefaTeags.COLUMN_NAME_TAG
+            };
+            String selection = TarefaTags.tarefaTeags.COLUMN_NAME_TAREFA_ID + " = ?";
+            String[] selectionArgs = { tarefa };
+            String sortOrder = TarefaTags.tarefaTeags.COLUMN_NAME_TAG + " DESC";
+            Cursor cursor = db.query(TarefaTags.tarefaTeags.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
+            cursor.moveToFirst();
+
+            int idxTag = cursor.getColumnIndexOrThrow(TarefaTags.tarefaTeags.COLUMN_NAME_TAG);
+            while (cursor.getPosition() <= cursor.getCount() - 1){
+                tags += cursor.getString(idxTag) + ", ";
+                cursor.moveToNext();
+            }
+            if(tags != null) {
+                return tags;
+            }else return "sem etigueta";
     }
 
 }

@@ -79,14 +79,11 @@ public class Tags extends AppCompatActivity {
             @Override
             public void onTagAdapterClick(View v, int possition) {
                 c.moveToPosition(possition);
-                int idxid = c.getColumnIndexOrThrow(TagsBD.tags._ID);
-                int idxNome = c.getColumnIndexOrThrow(TagsBD.tags.COLUMN_NAME_TAG);
+                int idxName = c.getColumnIndexOrThrow(TagsBD.tags.COLUMN_NAME_TAG);
 
 
-                Intent intent = new Intent(Tags.this, EditarTarefa.class);// mudar
-                intent.putExtra("id", c.getInt(idxid));
-                intent.putExtra("titulo", c.getString(idxNome));
-                intent.putExtra("posicao", possition);
+                Intent intent = new Intent(Tags.this, ExibirTarefas.class);// mudar
+                intent.putExtra("tag", c.getString(idxName));
                 startActivityForResult(intent, Tags.REQUEST_EDT);
             }
         });

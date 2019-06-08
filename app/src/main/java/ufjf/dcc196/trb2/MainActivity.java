@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import Persistence.BibliotecaDbHelper;
 import Persistence.TarefaBD;
+import Persistence.TarefaTags;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,12 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
         BibliotecaDbHelper bibliotecaHelper = new BibliotecaDbHelper(this);
 
-        //SQLiteDatabase db = bibliotecaHelper.getWritableDatabase();
-        //String select = TarefaBD.tarefa._ID + " >= ?";
-        //String[] selectArgs = {"0"};
-        //db.delete(TarefaBD.tarefa.TABLE_NAME, select, selectArgs);
-
-
         SQLiteDatabase dbR = bibliotecaHelper.getReadableDatabase();
         String[] visao = {
                 TarefaBD.tarefa._ID,
@@ -48,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
                 TarefaBD.tarefa.COLUMN_NAME_USADO,
                 TarefaBD.tarefa.COLUMN_NAME_GRAU_DIFICULDADE,
                 TarefaBD.tarefa.COLUMN_NAME_ESTADO,
-                //TarefaTags.tarefaTeags.COLUMN_NAME_TAG,
         };
         String selecao = TarefaBD.tarefa.COLUMN_NAME_ESTADO + " >= ?";
         String[] args = {"0"};
@@ -155,8 +149,31 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("dificuldade", c.getInt(idxGrauDificuldade));
                 intent.putExtra("estado", c.getInt(idxEstado));
                 intent.putExtra("posicao", possition);
+                intent.putExtra("tag", getTags(c.getString(idxTitulo)));
                 startActivityForResult(intent, MainActivity.REQUEST_EDT);
             }
         });
+    }
+
+    private String getTags(String tarefa){
+        String tags = "";
+        BibliotecaDbHelper bibliotecaHelper = new BibliotecaDbHelper(this);
+        SQLiteDatabase db = bibliotecaHelper.getWritableDatabase();
+        String[] projection = {
+                TarefaTags.tarefaTeags.COLUMN_NAME_TAG
+        };
+        String selection = TarefaTags.tarefaTeags.COLUMN_NAME_TAREFA + " = ?";
+        String[] selectionArgs = { tarefa };
+        String sortOrder = TarefaTags.tarefaTeags.COLUMN_NAME_TAG + " DESC";
+        Cursor cursor = db.query(TarefaTags.tarefaTeags.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
+        cursor.moveToFirst();
+
+        int idxTag = cursor.getColumnIndexOrThrow(TarefaTags.tarefaTeags.COLUMN_NAME_TAG);
+        while (cursor.getPosition() <= cursor.getCount() - 1){
+            tags += cursor.getString(idxTag) + ", ";
+            cursor.moveToNext();
+        }
+
+        return tags;
     }
 }

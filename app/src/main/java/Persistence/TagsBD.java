@@ -9,7 +9,7 @@ public final class TagsBD {
     public static final String SQL_CREATE_TAGS = "CREATE TABLE " + tags.TABLE_NAME + " (" +
             tags._ID + Int_Type + " PRIMARY KEY AUTOINCREMENT" + Sep +
             tags.COLUMN_NAME_TAG + Text_Type + ")";
-    public static final String SQL_DROP_TAGS = "DROP TABLE IF EXISTIS" + tags.TABLE_NAME;
+    public static final String SQL_DROP_TAGS = "DROP TABLE IF EXISTS" + tags.TABLE_NAME;
 
     public TagsBD(){
 

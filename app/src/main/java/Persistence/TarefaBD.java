@@ -15,7 +15,7 @@ public final class TarefaBD {
             tarefa.COLUMN_NAME_LIMITE + Data_Type + Sep +
             tarefa.COLUMN_NAME_USADO + Data_Type + Sep +
             tarefa.COLUMN_NAME_ESTADO + Int_Type + ")";
-    public static final String SQL_DROP_TAREFA = "DROP TABLE IF EXISTIS " + tarefa.TABLE_NAME;
+    public static final String SQL_DROP_TAREFA = "DROP TABLE IF EXISTS " + tarefa.TABLE_NAME;
 
     public TarefaBD(){
 
